@@ -13,20 +13,18 @@ if ($stmt->rowCount()>0) {
 	$_SESSION['login_type'] = "Seller";
 	echo "<script>window.location.assign('seller/dashboard.php')</script>";
 
-}/*
-$query = "SELECT * FROM mbofficers WHERE username= ? AND password = ? AND status = '0' limit 1";
-$stmt = $db->prepare($query);
-$stmt->execute(array($code, $password));
-$rows = $stmt->fetchAll();
-if ($stmt->rowCount()>0) {
-	$_SESSION['code'] = $code;
-	$_SESSION['id'] = session_id();
-	$_SESSION['login_type'] = "MBofficer";
-
-	// echo "<script>alert('You Are Logged In');window.location.assign('mbofficer/dashboard.php')</script>";
-	echo "<script>window.location.assign('mbofficer/dashboard.php')</script>";
-
 }
+$query = "SELECT id, email FROM school WHERE email= ? AND password = ? limit 1";
+$stmt = $db->prepare($query);
+$stmt->execute(array($email, $password));
+$rows = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($stmt->rowCount()>0) {
+	$_SESSION['code'] = $email;
+	$_SESSION['id'] = session_id();
+	$_SESSION['login_type'] = "School";
+	echo "<script>window.location.assign('school/dashboard.php')</script>";
+
+}/*
 $query = "SELECT * FROM manager WHERE username= ? AND password = ? AND status = '0' limit 1";
 $stmt = $db->prepare($query);
 $stmt->execute(array($code, $password));
