@@ -33,18 +33,17 @@
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-money"></i> Withdraw</a>
+                        <a href="withdraw.php"><i class="fa fa-money"></i> Withdraw</a>
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-table"></i> Transactions</a>
+                        <a href="transactions.php"><i class="fa fa-table"></i> Transactions</a>
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-gear"></i> Settings</a>
+                        <a href="settings.php"><i class="fa fa-gear"></i> Settings</a>
                     </li>
                 </ul>
 
