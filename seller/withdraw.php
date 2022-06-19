@@ -22,13 +22,42 @@ require 'php-includes/check-login.php';
         <?php require 'php-includes/nav.php';?>
         <div id="page-wrapper">
 		  <div class="header"> 
-                        <h1 class="page-header">Withdraw</h1>
-                    <ol class="breadcrumb">
-                    <li><a href="dashboard.php">Home</a></li>
-                    <li class="active">Withdraw</li>
-                </ol>
-									
-		</div>
+        <h1 class="page-header">Withdraw</h1>
+        <ol class="breadcrumb">
+          <li><a href="dashboard.php">Home</a></li>
+          <li class="active">Withdraw</li>
+        </ol>		
+		  </div>
+      <div id="page-inner"> 
+              <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Enter details
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Amount</label>
+                                            <input class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phone number</label>
+                                            <input class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                        <input type="submit" name="submit" class="btn btn-info success" value="Request">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+    </div>
             <div id="page-inner"> 
 				 <footer><p>All right reserved.</p></footer>
 				</div>

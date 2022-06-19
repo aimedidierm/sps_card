@@ -45,6 +45,9 @@
                     <li>
                         <a href="settings.php"><i class="fa fa-gear"></i> Settings</a>
                     </li>
+                    <li>
+                        <a href="../php-includes/logout.php"><i class="fa fa-sign-out"></i> Logout</a>
+                    </li>
                 </ul>
 
             </div>
