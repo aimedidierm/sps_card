@@ -8,7 +8,7 @@ require 'php-includes/check-login.php';
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marvel Free Bootstrap Admin Template</title>
+    <title>Seller dashboard</title>
     <!-- Bootstrap Styles-->
     <link href="../assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->

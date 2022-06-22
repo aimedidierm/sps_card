@@ -4,16 +4,6 @@ ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 require '../php-includes/connect.php';
 require 'php-includes/check-login.php';
-$query = "SELECT * FROM seller WHERE email= ? limit 1";
-$stmt = $db->prepare($query);
-$stmt->execute(array($_SESSION['code']));
-$rows = $stmt->fetch(PDO::FETCH_ASSOC);
-if ($stmt->rowCount()>0) {
-  $names="sample";
-  $email="sample";
-  $address="sample";
-  $telephone="sample";
-}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -52,7 +42,39 @@ if ($stmt->rowCount()>0) {
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form">
+                                <?php
+                                    $query = "SELECT * FROM seller WHERE email= ? limit 1";
+                                    $stmt = $db->prepare($query);
+                                    $stmt->execute(array($_SESSION['code']));
+                                    $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    if ($stmt->rowCount()>0) {
+                                      $names=$rows['names'];
+                                      $email=$rows['email'];
+                                      $address=$rows['address'];
+                                      $telephone=$rows['phone'];
+                                    }
+                                    if(isset($_POST['update'])){
+                                    $uaddress=$_POST['address'];
+                                    $uphone=$_POST['phone'];
+                                    $cpassword=md5($_POST['cpassword']);
+                                    $apassword=md5($_POST['apassword']);
+                                    if ($apassword == $cpassword){
+                                        if($apassword == $cpassword){
+                                            $sql ="UPDATE seller SET address = ?, phone = ? , password = ? WHERE email = ?";
+                                            $stm = $db->prepare($sql);
+                                            if ($stm->execute(array($uaddress, $uphone, $cpassword, $_SESSION['code']))) {
+                                                print "<script>alert('your data updated');window.location.assign('settings.php')</script>";
+
+                                                }
+                                        } else{
+                                            echo "<script>alert('Passwords are not match');window.location.assign('settings.php')</script>";
+                                        }
+                                    } else{
+                                        echo "<script>alert('Passwords are not match');window.location.assign('account.php')</script>";
+                                    }
+                                    }
+                                    ?>
+                                    <form method="post">
                                         <div class="form-group">
                                             <label>Names</label>
                                             <input class="form-control" value="<?php echo $names?>" disabled>
@@ -63,22 +85,22 @@ if ($stmt->rowCount()>0) {
                                         </div>
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input class="form-control" value="<?php echo $address?>">
+                                            <input class="form-control" value="<?php echo $address?>" name="address">
                                         </div>
                                         <div class="form-group">
                                             <label>Mobile number</label>
-                                            <input class="form-control" value="<?php echo $telephone?>">
+                                            <input class="form-control" value="<?php echo $telephone?>" name="phone">
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input class="form-control">
+                                            <input class="form-control" type="password" name="cpassword">
                                         </div>
                                         <div class="form-group">
                                             <label>Confirm password</label>
-                                            <input class="form-control">
+                                            <input class="form-control" type="password" name="apassword">
                                         </div>
                                         <div class="form-group">
-                                        <input type="submit" name="submit" class="btn btn-info success" value="Update">
+                                        <button type="submit" class="btn btn-success" name="update"><span class="glyphicon glyphicon-check"></span> Update</button>
                                         </div>
                                     </form>
                                 </div>
