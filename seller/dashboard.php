@@ -1,6 +1,22 @@
 <?php
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
 require '../php-includes/connect.php';
 require 'php-includes/check-login.php';
+$sql = "SELECT * FROM seller WHERE email = ?";
+$stmt = $db->prepare($sql);
+$stmt->execute(array($_SESSION['code']));
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$myid = $row['id'];
+$sql = "SELECT * FROM transactions WHERE seller = ?";
+$stmt = $db->prepare($sql);
+$stmt->execute(array($myid));
+$trnumb=$stmt->rowCount();
+$sql = "SELECT * FROM student";
+$stmt = $db->prepare($sql);
+$stmt->execute();
+$users=$stmt->rowCount();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,7 +61,7 @@ require 'php-includes/check-login.php';
                                 
                             </div>
                             <div class="panel-right">
-								<h3>16,150</h3>
+								<h3><?php echo $trnumb;?></h3>
                                <strong> Transactions</strong>
                             </div>
                         </div>
@@ -57,7 +73,7 @@ require 'php-includes/check-login.php';
 								</div>
                                 
                             <div class="panel-right">
-							<h3>25,550 </h3>
+							<h3><?php echo $users;?></h3>
                                <strong> Customers</strong>
 
                             </div>
@@ -70,8 +86,8 @@ require 'php-includes/check-login.php';
                                
                             </div>
                             <div class="panel-right">
-							 <h3>11,225 </h3>
-                               <strong> Sales</strong>
+							 <h3><?php echo $trnumb;?></h3>
+                               <strong> Your sales</strong>
 
                             </div>
                         </div>
@@ -83,8 +99,8 @@ require 'php-includes/check-login.php';
                                 
                             </div>
                             <div class="panel-right">
-							<h3>72,525 </h3>
-                             <strong>Branch</strong>
+							<h3>1</h3>
+                             <strong>your Branch</strong>
 
                             </div>
                         </div>
