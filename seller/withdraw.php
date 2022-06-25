@@ -1,6 +1,30 @@
 <?php
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
 require '../php-includes/connect.php';
 require 'php-includes/check-login.php';
+$query = "SELECT * FROM seller WHERE email= ? limit 1";
+$stmt = $db->prepare($query);
+$stmt->execute(array($_SESSION['code']));
+$rows = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($stmt->rowCount()>0) {
+    $balance=$rows['balance'];
+    $s_id=$rows['id'];
+}
+if(isset($_POST['request'])){
+$amount=$_POST['amount'];
+if ($amount <= $balance){
+    $sql ="INSERT INTO pending_withdraw (seller, amount) VALUES (?,?)";
+    $stm = $db->prepare($sql);
+    if ($stm->execute(array($s_id, $amount))) {
+        print "<script>alert('Your withdraw request send');window.location.assign('withdraw.php')</script>";
+
+    }
+} else{
+    echo "<script>alert('Low balance');window.location.assign('withdraw.php')</script>";
+}
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -38,17 +62,13 @@ require 'php-includes/check-login.php';
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form">
+                                    <form method="post">
                                         <div class="form-group">
                                             <label>Amount</label>
-                                            <input class="form-control">
+                                            <input class="form-control" type="number" name="amount">
                                         </div>
                                         <div class="form-group">
-                                            <label>Phone number</label>
-                                            <input class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                        <input type="submit" name="submit" class="btn btn-info success" value="Request">
+                                        <button type="submit" class="btn btn-success" name="request"><span class="glyphicon glyphicon-check"></span> Request</button>
                                         </div>
                                     </form>
                                 </div>
