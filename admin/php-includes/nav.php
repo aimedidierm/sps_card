@@ -51,7 +51,18 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="transactions.php"><i class="fa fa-table"></i> Transactions</a>
+                        <a href="#"><i class="fa fa-table"></i> Transactions<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="sttransactions.php">Students</a>
+                            </li>
+                            <li>
+                                <a href="sctransactions.php">Schools</a>
+                            </li>
+                            <li>
+                                <a href="setransactions.php">Sellers</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="settings.php"><i class="fa fa-gear"></i> Settings</a>
