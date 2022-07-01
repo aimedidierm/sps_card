@@ -72,6 +72,7 @@ if(isset($_POST['save'])){
                                             <th>Names</th>
                                             <th>Email</th>
                                             <th>phone</th>
+                                            <th>Balance</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -94,6 +95,7 @@ if(isset($_POST['save'])){
                                             <td><?php print $row['names']?></td>
                                             <td><?php print $row['email']?></td>
                                             <td><?php print $row['phone']?></td>
+                                            <td><?php print $row['balance']?></td>
                                             <td><form method="post"><button type="submit" class="btn btn-danger" id="<?php echo $row["id"];$sid=$row["id"]; ?>" name="delete"><span class="glyphicon glyphicon-trash"></span> Delete</button></form></td>
                                         </tr>
                                         <?php
