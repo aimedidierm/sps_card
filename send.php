@@ -31,17 +31,24 @@ require 'php-includes/connect.php';
                                 <div class="col-lg-6">
                                     <form id="login-form" class="form" action="login.php" method="post">
                                         <div class="form-group">
-                                            <label>Email</label>
-                                            <input name="email" class="form-control" placeholder="Enter email" type="email">
+                                            <label>Student ID:</label>
+                                            <input name="sid" class="form-control" placeholder="Enter ID" type="text">
                                         </div>
                                         <div class="form-group">
-                                            <label>Password</label>
-                                            <input name="password" class="form-control" placeholder="Enter password" type="password">
+                                            <label>Your name:</label>
+                                            <input name="name" class="form-control" placeholder="Enter names" type="text">
                                         </div>
                                         <div class="form-group">
-                                        <input type="submit" name="submit" class="btn btn-info btn-md" value="Login">
+                                            <label>Amount:</label>
+                                            <input name="amount" class="form-control" placeholder="Enter amount" type="number">
                                         </div>
-                                        <a href="send.php" class="btn btn-danger">Send money</a>
+                                        <div class="form-group">
+                                            <label>MOMO number:</label>
+                                            <input name="number" class="form-control" placeholder="Enter phone number" type="email">
+                                        </div>
+                                        <div class="form-group">
+                                        <input type="submit" name="submit" class="btn btn-danger" value="Send money">
+                                        </div>
                             </div>
                             <!-- /.row (nested) -->
                         </div>
