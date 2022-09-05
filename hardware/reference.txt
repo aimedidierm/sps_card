@@ -1,5 +1,0 @@
-Attendence with database: https://theiotprojects.com/rfid-based-attendance-system-using-nodemcu/
-OLED with node MCU: https://www.youtube.com/watch?v=B9LxcZGU0eo , https://lastminuteengineers.com/oled-display-esp8266-tutorial/#:~:text=Wiring%20OLED%20display%20module%20to%20ESP8266%20NodeMCU,-Enough%20of%20the&text=Connections%20are%20fairly%20simple.,D2%20pin%20on%20your%20NodeMCU.
-OLED with RFID and node MCU: https://www.youtube.com/watch?v=XdNvP01dpj8
-OLED, Keypad, RFID and NODE MCU: https://www.youtube.com/watch?v=RVa0zpzpeR8
-OLED animation: https://www.youtube.com/watch?v=0KGMFhFQ0YY
