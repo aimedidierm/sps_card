@@ -1,17 +1,17 @@
 #include <ArduinoJson.h>
 #include <SPI.h>
 #include <MFRC522.h>
-#include <Wire.h> 
-#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
 #include <Keypad.h>
+#include <LiquidCrystal_I2C.h>
 #define SS_PIN 10
 #define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
-
-#define red A1
-#define green A1
-#define buzzer A2
 LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+
+#define red 7
+#define green 8
+#define buzzer 6
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //four columns
@@ -30,32 +30,31 @@ char keys[ROWS][COLS] = {
 
 };
 
-byte rowPins[ROWS] = {9, 8, 7, 6}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {4, 3, A0}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {A0,A1,A2,A3}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {2,3,4}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
-int cstatus=0;
+int cstatus=0,balance=0;
 String card;
-//int outml=0;
 void setup() 
 {
-  lcd.init();                      // initialize the lcd 
   lcd.init();
+  lcd.init();
+  lcd.backlight();
   SPI.begin();  
   Serial.begin(115200);   // Initiate a serial communication
   SPI.begin();      // Initiate  SPI bus
   mfrc522.PCD_Init();   // Initiate MFRC522
   pinMode(red , OUTPUT);
+  pinMode(green , OUTPUT);
   pinMode(buzzer , OUTPUT);
-  lcd.backlight();
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Smart");
+  lcd.print("SPS");
   lcd.setCursor(0,1);
-  lcd.print("student card");
-  delay(5000);
-
+  lcd.print("Student card");
+  delay(3000);
 }
 
 void loop() 
@@ -70,7 +69,7 @@ void readcard(){
   // Look for new cards
   int i=0,j=0,m=0,x=0,s=0,money=0;
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("Tap your card");
   delay(500);
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
@@ -93,20 +92,21 @@ void readcard(){
   }
   content.toUpperCase();
   card=content.substring(1);
+  entermoney();
   delay(100);
   }
 void entermoney(){
   int j=0,k=0;
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Enter money:");
+  lcd.setCursor(0, 0);
+  lcd.print("Enter money: ");
   for( int d=2; d>1;d++){
     int key = keypad.getKey();
     if (key!=NO_KEY && key!='#' && key!='*'){
         money[j] = key;
         money[j+1]='\0';   
         j++;
-        lcd.setCursor(0,1);
+        lcd.setCursor(0, 1);
         lcd.print(money);
     }
     if (key=='#'&& j>0)
@@ -128,12 +128,13 @@ void enterpass(){
         pass[j+1]='\0';   
         j++;
         lcd.setCursor(0,1);
-        lcd.print(pass);
+        lcd.print("*");
     }
     if (key=='#'&& j>0)
     {
     j=0;
     lcd.clear();
+    lcd.setCursor(0,0);
     lcd.print("Loading");
     Serial.println((String)"?card='"+card+"'&money="+money+"'&pass="+pass);
     while(k==0){
@@ -142,6 +143,7 @@ void enterpass(){
       DynamicJsonBuffer jsonBuffer;
       JsonObject& root = jsonBuffer.parseObject(Serial.readStringUntil('\n'));
       if (root["cstatus"]) {
+        cstatus=root["cstatus"];
       if(cstatus==1){
         balance=root["balance"];
         sussc();
@@ -162,23 +164,19 @@ void enterpass(){
   }
 void lowbalance(){
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Insufficient");
-  lcd.setCursor(0,1);
-  lcd.print("funds");
+  lcd.setCursor(0, 0);
+  lcd.print("Insufficient funds");
   digitalWrite(red,HIGH);
-  tone(buzzer, 1000, 1000);
+  tone(buzzer, 
+  1000, 1000);
   delay(3000);
   digitalWrite(red,LOW);
-  lcd.clear();
   resetFunc();
 }
 void inpass() {
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Inncorect");
-  lcd.setCursor(0,1);
-  lcd.print("Password");
+  lcd.setCursor(0, 0);
+  lcd.print("Incorect password");
   digitalWrite(red,HIGH);
   tone(buzzer, 700, 1000);
   delay(3000);
@@ -187,10 +185,11 @@ void inpass() {
 }
 void sussc(){
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("Thank you");
-  lcd.setCursor(0,1);
+  lcd.setCursor(0, 1);
   lcd.print("Balance:");
+  lcd.print(balance);
   digitalWrite(green,HIGH);
   tone(buzzer, 500, 1000);
   delay(3000);

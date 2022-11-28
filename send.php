@@ -8,7 +8,7 @@ require 'php-includes/connect.php';
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student card</title>
+    <title>SPS Card</title>
 	<!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FontAwesome Styles-->
@@ -19,7 +19,7 @@ require 'php-includes/connect.php';
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
 <body>
-<h1 class="page-header">Smart student card system</h1>
+<h1 class="page-header">SPS Card</h1>
     <div>
 		
             <div id="page-inner"> 
