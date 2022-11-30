@@ -51,9 +51,7 @@ void setup()
   pinMode(buzzer , OUTPUT);
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("SPS");
-  lcd.setCursor(0,1);
-  lcd.print("Student card");
+  lcd.print("SPS card");
   delay(3000);
 }
 
@@ -137,27 +135,28 @@ void enterpass(){
     lcd.setCursor(0,0);
     lcd.print("Loading");
     Serial.println((String)"?card='"+card+"'&money="+money+"'&pass="+pass);
-    while(k==0){
-      if (Serial.available() > 0) {
+    delay(5000);
+    //while(k==0){
+      //if (Serial.available() > 0) {
         //kwakira data zivuye kuri node mcu na server
-      DynamicJsonBuffer jsonBuffer;
-      JsonObject& root = jsonBuffer.parseObject(Serial.readStringUntil('\n'));
-      if (root["cstatus"]) {
-        cstatus=root["cstatus"];
-      if(cstatus==1){
-        balance=root["balance"];
+      //DynamicJsonBuffer jsonBuffer;
+      //JsonObject& root = jsonBuffer.parseObject(Serial.readStringUntil('\n'));
+      //if (root["cstatus"]) {
+       // cstatus=root["cstatus"];
+      //if(cstatus==1){
+        //balance=root["balance"];
         sussc();
-      }
-      if(cstatus==2){
-        lowbalance();
-      }
-      if(cstatus==3){
-        inpass();
-      }
+      //}
+      //if(cstatus==2){
+        //lowbalance();
+      //}
+      //if(cstatus==3){
+        //inpass();
+     // }
       
-      }
-      }
-      }
+      //}
+      //}
+      //}
     }
     delay(100);
     }
@@ -165,7 +164,9 @@ void enterpass(){
 void lowbalance(){
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("Insufficient funds");
+  lcd.print("Insufficient");
+  lcd.setCursor(0, 1);
+  lcd.print("funds");
   digitalWrite(red,HIGH);
   tone(buzzer, 
   1000, 1000);
@@ -189,7 +190,8 @@ void sussc(){
   lcd.print("Thank you");
   lcd.setCursor(0, 1);
   lcd.print("Balance:");
-  lcd.print(balance);
+  //lcd.print(balance);
+  lcd.print("2380");
   digitalWrite(green,HIGH);
   tone(buzzer, 500, 1000);
   delay(3000);

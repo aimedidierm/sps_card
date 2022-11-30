@@ -3,6 +3,85 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 require 'php-includes/connect.php';
+function getToken() {
+    $curl = curl_init();
+  
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => BASE_URL . '/auth/agents/authorize',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => '{"client_id": "b499131c-6f65-11ed-929a-dead64802bd2","client_secret": "e9f6fd694cbd79c3d10b603cf0796296da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
+      CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+    ));
+  
+    $response = curl_exec($curl);
+  
+    curl_close($curl);
+  
+    return json_decode($response)->access;
+}
+if(isset($_POST['pay'])){
+    $card=$_POST['card'];
+    $number=$_POST['number'];
+    $amount=$_POST['amount'];
+    $query = "SELECT * FROM user WHERE card= ? limit 1";
+    $stmt = $db->prepare($query);
+    $stmt->execute(array($card));
+    $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($stmt->rowCount()>0) {
+        //some codes here
+        $myid=$rows['id'];
+        $balance=$rows['balance'];
+        $req = '{"amount":'.$amount.',"number":"'.$number.'"}';
+    define('BASE_URL', 'https://payments.paypack.rw/api');
+    
+    $curl = curl_init();
+    
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => BASE_URL . '/transactions/cashin?Idempotency-Key=OldbBsHAwAdcYalKLXuiMcqRrdEcDGRv',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => $req,
+      CURLOPT_HTTPHEADER => array(
+        'Authorization: Bearer ' . getToken(),
+        'Content-Type: application/json'
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+    //echo $response;
+    //Insert data in database
+    $newbalance=$balance+$amount;
+    $sql ="UPDATE user SET balance = ? WHERE id = ? limit 1";
+    $stm = $db->prepare($sql);
+    if ($stm->execute(array($newbalance,$myid))) {
+        //continue
+        $sql ="INSERT INTO transactions (debit,user) VALUES (?,?)";
+        $stm = $db->prepare($sql);
+        if ($stm->execute(array($amount,$myid))) {
+            print "<script>alert('Money send');window.location.assign('send.php')</script>";
+        } else {
+            print "<script>alert('Transaction history add fail');window.location.assign('send.php')</script>";
+        }
+    } else{
+        print "<script>alert('Balance update fail');window.location.assign('send.php')</script>";
+    }
+    } else {
+        echo "<script>alert('User not found');window.location.assign('send.php')</script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <head>
