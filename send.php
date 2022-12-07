@@ -15,7 +15,8 @@ function getToken() {
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'POST',
-      CURLOPT_POSTFIELDS => '{"client_id": "b499131c-6f65-11ed-929a-dead64802bd2","client_secret": "e9f6fd694cbd79c3d10b603cf0796296da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
+      //CURLOPT_POSTFIELDS => '{"client_id": "b499131c-6f65-11ed-929a-dead64802bd2","client_secret": "e9f6fd694cbd79c3d10b603cf0796296da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
+      CURLOPT_POSTFIELDS => '{"client_id": "89f8e714-0f47-11ed-babe-dead0062f58a","client_secret": "afc73b804eee90103e2c8caad4741393da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
       CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
     ));
   
@@ -26,10 +27,10 @@ function getToken() {
     return json_decode($response)->access;
 }
 if(isset($_POST['pay'])){
-    $card=$_POST['card'];
+    $card=$_POST['sid'];
     $number=$_POST['number'];
     $amount=$_POST['amount'];
-    $query = "SELECT * FROM user WHERE card= ? limit 1";
+    $query = "SELECT * FROM student WHERE card= ? limit 1";
     $stmt = $db->prepare($query);
     $stmt->execute(array($card));
     $rows = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -64,11 +65,11 @@ if(isset($_POST['pay'])){
     //echo $response;
     //Insert data in database
     $newbalance=$balance+$amount;
-    $sql ="UPDATE user SET balance = ? WHERE id = ? limit 1";
+    $sql ="UPDATE student SET balance = ? WHERE id = ? limit 1";
     $stm = $db->prepare($sql);
     if ($stm->execute(array($newbalance,$myid))) {
         //continue
-        $sql ="INSERT INTO transactions (debit,user) VALUES (?,?)";
+        $sql ="INSERT INTO transactions (debit,student) VALUES (?,?)";
         $stm = $db->prepare($sql);
         if ($stm->execute(array($amount,$myid))) {
             print "<script>alert('Money send');window.location.assign('send.php')</script>";
@@ -108,7 +109,7 @@ if(isset($_POST['pay'])){
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form id="login-form" class="form" action="login.php" method="post">
+                                    <form id="login-form" class="form" method="post">
                                         <div class="form-group">
                                             <label>Student ID:</label>
                                             <input name="sid" class="form-control" placeholder="Enter ID" type="text">
@@ -123,10 +124,10 @@ if(isset($_POST['pay'])){
                                         </div>
                                         <div class="form-group">
                                             <label>MOMO number:</label>
-                                            <input name="number" class="form-control" placeholder="Enter phone number" type="email">
+                                            <input name="number" class="form-control" placeholder="Enter phone number" type="number">
                                         </div>
                                         <div class="form-group">
-                                        <input type="submit" name="submit" class="btn btn-danger" value="Send money">
+                                        <input type="submit" name="pay" class="btn btn-danger" value="Send money">
                                         </div>
                             </div>
                             <!-- /.row (nested) -->
