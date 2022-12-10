@@ -65,6 +65,9 @@
                         </ul>
                     </li>
                     <li>
+                        <a href="withdraw.php"><i class="fa fa-money"></i> Pending withdraw</a>
+                    </li>
+                    <li>
                         <a href="settings.php"><i class="fa fa-gear"></i> Settings</a>
                     </li>
                     <li>
