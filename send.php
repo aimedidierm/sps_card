@@ -15,8 +15,7 @@ function getToken() {
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'POST',
-      //CURLOPT_POSTFIELDS => '{"client_id": "b499131c-6f65-11ed-929a-dead64802bd2","client_secret": "e9f6fd694cbd79c3d10b603cf0796296da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
-      CURLOPT_POSTFIELDS => '{"client_id": "89f8e714-0f47-11ed-babe-dead0062f58a","client_secret": "afc73b804eee90103e2c8caad4741393da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
+      CURLOPT_POSTFIELDS => '{"client_id": "b499131c-6f65-11ed-929a-dead64802bd2","client_secret": "e9f6fd694cbd79c3d10b603cf0796296da39a3ee5e6b4b0d3255bfef95601890afd80709"}',
       CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
     ));
   
